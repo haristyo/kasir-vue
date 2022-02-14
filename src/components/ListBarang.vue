@@ -107,6 +107,7 @@ export default {
       this.items = [];
       await fetch(this.url)
         .then((response) => response.json())
+        // .then((response) => response.$values)
         .then((data) => {
           for (let index = 0; index < data.length; index++) {
             this.items.push({
@@ -139,6 +140,7 @@ export default {
       this.detailId = id;
     },
     addData() {
+      // console.log(this.items);
       this.detailStatus = true;
       this.detailId = null;
       this.inputStatus = true;

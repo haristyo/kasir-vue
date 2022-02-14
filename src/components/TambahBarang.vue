@@ -86,6 +86,7 @@ export default {
 
   mounted() {
     this.getList();
+    console.log(this.barang);
     // console.log("this barang mounted", this.barang);
   },
   methods: {
@@ -97,12 +98,14 @@ export default {
       // axios.get(this.url)
       await fetch(this.url)
         .then((response) => response.json())
+        // .then((response) => response.$values)
         .then((response) => {
           // console.log(response);
 
           // this.barang = response.data;
           for (let i = 0; i < response.length; i++) {
             this.barang.push({
+              id: response[i].id,
               namaBarang: response[i].name,
               hargaSatuan: response[i].price,
               checkedStatus: false,

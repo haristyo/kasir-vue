@@ -78,6 +78,7 @@ export default {
           await fetch(this.link, {
             method: "PUT",
             body: JSON.stringify({
+              
               name: this.items.namaBarang,
               price: this.items.hargaSatuan,
             }),

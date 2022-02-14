@@ -107,6 +107,7 @@
     <button @click="addRowMultiple" class="tambah">
       Tambah Barang Lebih dari 1
     </button>
+    <button @click="checkout" class="hapus">Checkout</button>
   </div>
 </template>
 
@@ -133,6 +134,7 @@ export default {
       // addedItem:[],
       deletedDataItem: null,
       items: [],
+      url: "https://localhost:5001/api/belanja",
     };
   },
   methods: {
@@ -173,6 +175,31 @@ export default {
       this.deletedIndex = index;
       this.deletedDataItem = itemData;
     },
+
+    async checkout() {
+      await console.log(this.items);
+      let dataSend = [];
+      for (let i = 0; i < this.items.length; i++) {
+        dataSend.push({
+          id: this.items[i].id,
+          name: this.items[i].namaBarang,
+          price: this.items[i].hargaSatuan,
+          qty: this.items[i].qty,
+        });
+      }
+      console.log("dataSend : ", dataSend);
+      await fetch(this.url, {
+        method: "POST",
+        body: JSON.stringify(dataSend),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((response) => console.log(response));
+      // .then((data) => console.log("hasil fetch : ", (this.url = data)));
+      // await console.log("hasil fetch : ", this.url);
+    },
     // confirm(param) {
     //   if (param.confirm) {
     //     this.items.splice(param.index, 1);
@@ -185,9 +212,10 @@ export default {
       // console.log(param);
       if (param) {
         this.items.push({
+          id: param.id,
           namaBarang: param.namaBarang,
           hargaSatuan: param.hargaSatuan,
-          qty: 0,
+          qty: 1,
         });
       }
       // if (param.adding) {
