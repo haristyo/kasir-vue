@@ -24,6 +24,7 @@
     <table border="2" align="center">
       <thead>
         <tr>
+          <th>Code Barang</th>
           <th>Nama Barang</th>
           <th>Harga Satuan</th>
           <th>Quantity</th>
@@ -33,6 +34,9 @@
       </thead>
       <tbody>
         <tr v-for="(itemData, index) in items" :key="index">
+          <td>
+            {{ itemData.code }}
+          </td>
           <td>
             <!-- <input
               type="text"
@@ -74,7 +78,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" class="total-label">Total</td>
+          <td colspan="4" class="total-label">Total</td>
           <td>{{ "Rp. " + formatPrice(Number(total)) }}</td>
           <!-- <td>{{ total || toCurrency }}</td> -->
           <td class="total-label">
@@ -85,7 +89,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" class="total-label">Diskon</td>
+          <td colspan="4" class="total-label">Diskon</td>
           <td :class="diskon ? 'diskon' : 'undiskon'">
             {{ "Rp. " + formatPrice(Number(diskon)) }}
           </td>
@@ -96,7 +100,7 @@
           <td class="total-label" v-else>Selamat anda mendapatkan diskon</td>
         </tr>
         <tr>
-          <td colspan="3" class="total-label">Grand Total</td>
+          <td colspan="4" class="total-label">Grand Total</td>
           <td>{{ "Rp. " + formatPrice(Number(total) - Number(diskon)) }}</td>
           <!-- <td>{{ total || toCurrency }}</td> -->
           <td class="total-label"></td>
@@ -134,7 +138,7 @@ export default {
       // addedItem:[],
       deletedDataItem: null,
       items: [],
-      url: "https://localhost:5001/api/belanja",
+      url: "https://localhost:44356/api/belanja",
     };
   },
   methods: {
@@ -181,10 +185,10 @@ export default {
       let dataSend = [];
       for (let i = 0; i < this.items.length; i++) {
         dataSend.push({
-          id: this.items[i].id,
+          itemid: this.items[i].id,
           name: this.items[i].namaBarang,
           price: this.items[i].hargaSatuan,
-          qty: this.items[i].qty,
+          qty: this.items[i].qty
         });
       }
       console.log("dataSend : ", dataSend);
@@ -216,6 +220,7 @@ export default {
           namaBarang: param.namaBarang,
           hargaSatuan: param.hargaSatuan,
           qty: 1,
+          code: param.code
         });
       }
       // if (param.adding) {

@@ -40,6 +40,7 @@
           <th>No</th>
           <th>Nama Barang</th>
           <th>Harga Satuan</th>
+          <th>Code Barang</th>
           <th>Aksi</th>
         </tr>
       </thead>
@@ -53,7 +54,9 @@
             RP.
             {{ formatPrice(itemData.hargaSatuan) }}
           </td>
-
+          <td>
+            {{ itemData.code }}
+          </td>
           <td class="total-label">
             <button @click="removeRow(itemData.id)" class="hapus">Hapus</button>
             <button @click="detailRow(itemData.id)" class="tambah">
@@ -90,7 +93,7 @@ export default {
   data() {
     return {
       items: [],
-      url: "https://localhost:5001/api/Items",
+      url: "https://localhost:44356/api/Items",
       // url: "https://localhost:5001/api/Items",
       deleteStatus: false,
       deletedId: null,
@@ -114,6 +117,7 @@ export default {
               id: data[index].id,
               namaBarang: data[index].name,
               hargaSatuan: data[index].price,
+              code: data[index].code
             });
           }
         });

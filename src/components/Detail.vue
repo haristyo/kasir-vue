@@ -16,6 +16,13 @@
           </td>
           <td v-else>Rp. {{ formatPrice(items.hargaSatuan) }}</td>
         </tr>
+        <tr>
+          <th>Code Barang</th>
+          <td v-if="inputStatus">
+            <input type="text" v-model="items.code" />
+          </td>
+          <td v-else>{{items.code}}</td>
+        </tr>
       </tbody>
     </table>
     <div v-if="inputStatus">
@@ -34,7 +41,7 @@ export default {
         // hargaSatuan: 1000,
       },
       item: null,
-      url: "https://localhost:5001/api/Items",
+      url: "https://localhost:44356/api/Items",
       link: null,
     };
   },
@@ -65,6 +72,7 @@ export default {
             id: data.id,
             namaBarang: data.name,
             hargaSatuan: data.price,
+            code:data.code
           };
         })
         .then("items : ", console.log(this.items));
@@ -81,6 +89,7 @@ export default {
               
               name: this.items.namaBarang,
               price: this.items.hargaSatuan,
+              code: this.items.code,
             }),
             headers: {
               "Content-Type": "application/json",
@@ -92,6 +101,7 @@ export default {
             body: JSON.stringify({
               name: this.items.namaBarang,
               price: this.items.hargaSatuan,
+              code: this.items.code,
             }),
             headers: {
               "Content-Type": "application/json",

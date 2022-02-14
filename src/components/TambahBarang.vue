@@ -61,7 +61,7 @@ export default {
     // this.getList();
     return {
       // url: "https://api.dictionaryapi.dev/api/v2/entries/en/hello",
-      url: "https://localhost:5001/api/Items",
+      url: "https://localhost:44356/api/Items",
       //   barang: [
       //     {
       //       checkedStatus: false,
@@ -108,6 +108,7 @@ export default {
               id: response[i].id,
               namaBarang: response[i].name,
               hargaSatuan: response[i].price,
+              code : response[i].code,
               checkedStatus: false,
             });
             // console.log(response);
