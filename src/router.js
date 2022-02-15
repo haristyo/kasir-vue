@@ -15,6 +15,10 @@ export default new Router({
             component: () => import('./components/Kasir.vue')
         },
         {
+            path:'/transaksi',
+            component: () => import('./components/Transaksi.vue')
+        },
+        {
             path:'/page1',
             component: () => import('./pages/Page1.vue'),
             children: [

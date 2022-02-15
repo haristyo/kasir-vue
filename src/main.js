@@ -12,6 +12,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
+// // import moment from 'moment'
+
+// import moment from 'moment';
+// moment().format();
+
 
 new Vue({
   router,

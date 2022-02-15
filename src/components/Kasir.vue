@@ -10,6 +10,7 @@
         <button @click="hapus(false)">Batal</button>
       </template>
     </Popup>
+    
     <Popup :isShow="tambahBarang">
       <template name="title">Tambah Item Barang</template>
       <template>
@@ -203,6 +204,7 @@ export default {
         .then((response) => console.log(response));
       // .then((data) => console.log("hasil fetch : ", (this.url = data)));
       // await console.log("hasil fetch : ", this.url);
+      this.items=[];
     },
     // confirm(param) {
     //   if (param.confirm) {
