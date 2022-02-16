@@ -13,15 +13,9 @@
 
     <Popup :isShow="detailStatus">
       <template name="title">Detail Transaksi</template>
-
       <template>
         <DetailTransaksi :invoiceId="InoviceId" @detailTransaksiCallback="detailTransaksiEvent"/>
       </template>
-<!--
-      <template name="button">
-        <button @click="detailStatus=false">Tutup</button>
-      </template>
- -->
     </Popup>
 
     <h1>Data Transaksi</h1>
@@ -53,6 +47,7 @@
         </tr>
       </tbody>
     </table>
+    <div ><textbox >{{showJson}}</textbox></div>
   </div>
 </template>
 
@@ -83,9 +78,10 @@ export default {
   data() {
     return {
       transaksi: [],
-      url: "https://localhost:44356/api/Belanja/",
+      url: "https://localhost:44356/api/Belanja",
       // url: "https://localhost:5001/api/Items",
       deleteStatus: false,
+      showJson: null,
       deletedId: null,
       detailStatus: false,
       detailId: null,
@@ -123,8 +119,30 @@ export default {
     hapus(){
 
     },
-    detailTransaksiEvent(){
+    async detailTransaksiEvent(param){
       this.detailStatus = false;
+      if(param){
+      let dataSend = JSON.stringify(param);
+      this.showJson = dataSend;
+      console.log("dataSend : ", dataSend);
+      this.link = this.url + "/" + param.id;
+      console.log("target api : ", this.link);
+      alert(dataSend);
+      
+      await fetch(this.link, {
+        method: "PUT",
+        body: dataSend,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((response) => console.log("Hasilnya : ",response));
+      }
+
+      
+      this.getTransaksi();
+
     },
 
     total_item(transaksiData){

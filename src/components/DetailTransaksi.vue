@@ -7,27 +7,29 @@
         <th>Item Price</th>
         <th>Item Quantity</th>
         <th>Item Total Price</th>
+        <th>Aksi</th>
       </tr>
     <tbody>
       <tr v-for="(transaksi, index) in transaksi.invoiceDetails" :key="index">
       <td>{{index+1}}</td>
       <td>{{transaksi.itemName}}</td>
       <td>Rp. {{transaksi.itemPrice|formatPrice}}</td>
-      <td>{{transaksi.qty}}</td>
-      <td>Rp. {{transaksi.price|formatPrice}}</td>
+      <td><input type="number" v-model="transaksi.qty" min="0"/></td>
+      <td>Rp. {{transaksi.itemPrice*transaksi.qty|formatPrice}}</td>
+      <td><button @click="deleteRow(index)" class="hapus">Hapus</button></td>
       </tr>
         
     </tbody>
     </table>
     <div>
       <button @click="simpan(true)">Simpan</button>
-      <button @click="simpan(false)">Cancel</button>
+      <button @click="simpan(false)">Batal</button>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "Detail",
+  name: "DetailTransaksi",
   filters: {
   formatPrice(value) {
       let val = (value / 1).toFixed(0).replace(".", ",");
@@ -36,10 +38,7 @@ export default {
    },
   data() {
     return {
-      transaksi: {
-        // namaBarang: "barang",
-        // hargaSatuan: 1000,
-      },
+      transaksi: [],
       item: null,
       url: "https://localhost:44356/api/Belanja",
       link: null,
@@ -56,6 +55,12 @@ export default {
   beforeMount() {
   },
   methods: {
+
+    deleteRow(index) {
+      // this.items.splice(index, 1);
+      console.log(index);
+        this.transaksi.invoiceDetails.splice(index, 1);
+    },
     async getTransaksi() {
       this.transaksi = {};
 
@@ -73,9 +78,15 @@ export default {
         .then(console.log("Transaksi : ", this.transaksi));
     },
     async simpan(status){
-      console.log(status);
-      console.log(this.transaksi);
+      if(status){
       this.$emit("detailTransaksiCallback", this.transaksi);
+      }
+      else{
+        this.$emit("detailTransaksiCallback");
+      }
+      // console.log(status);
+      // console.log(this.transaksi);
+
     },
     // async simpan(status) {
     //   if (status) {

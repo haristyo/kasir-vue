@@ -38,7 +38,8 @@ export default {
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 1rem 1.5rem;
-  width: 75%;
+  min-width: 75%;
+  max-width:100%;
   border-radius: 0.5rem;
 }
 </style>
