@@ -47,7 +47,6 @@
         </tr>
       </tbody>
     </table>
-    <div ><textbox >{{showJson}}</textbox></div>
   </div>
 </template>
 
@@ -102,11 +101,13 @@ export default {
       await fetch(this.url)
         .then((response) => response.json())
         // .then((response) => response.$values)
-        .then((data) => {
-          for (let index = 0; index < data.length; index++) {
-            this.transaksi.push(data[index]);
-          }
-        });
+        .then((data) => 
+                        {
+                          for (let index = 0; index < data.length; index++) {
+                            this.transaksi.push(data[index]);
+                          }
+                        }
+        );
     },
     async addRandomData(){
       await fetch(this.url+'invoice')
@@ -122,22 +123,45 @@ export default {
     async detailTransaksiEvent(param){
       this.detailStatus = false;
       if(param){
-      let dataSend = JSON.stringify(param);
-      this.showJson = dataSend;
-      console.log("dataSend : ", dataSend);
+      console.log("terkirim dari popup : ", param);
+      let invoiceUpdate = {
+        Id : param.id,
+        InvoiceDate : param.invoiceDate,
+        InvoiceNo : param.invoiceNo,
+        InvoiceDetails: []
+        };
+        for(let i=0; i < param.invoiceDetails.length;i++){
+          invoiceUpdate.InvoiceDetails.push(
+            {
+              Id: param.invoiceDetails[i].id,
+              ItemId: param.invoiceDetails[i].itemId,
+              InvoiceId : param.id,
+              Price : Number(param.invoiceDetails[i].qty) * Number(param.invoiceDetails[i].itemPrice),
+              Qty : param.invoiceDetails[i].qty,
+          }
+          );
+        }
+      
+      console.log("invoice Update Terbaru:", invoiceUpdate);
+      let dataSend = JSON.stringify(invoiceUpdate.InvoiceDetails);
+      // this.showJson = dataSend;
+      console.log("data bakal disubmit  : ", dataSend);
       this.link = this.url + "/" + param.id;
       console.log("target api : ", this.link);
-      alert(dataSend);
+      // }
+      // alert(dataSend);
+      
       
       await fetch(this.link, {
         method: "PUT",
         body: dataSend,
         headers: {
           "Content-Type": "application/json",
-        },
+        }
       })
-        .then((response) => response.json())
         .then((response) => console.log("Hasilnya : ",response));
+        // .then((response) => response.json())
+      
       }
 
       
