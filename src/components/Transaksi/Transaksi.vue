@@ -89,6 +89,7 @@ export default {
       detailId: null,
       inputStatus: false,
       InoviceId:null,
+      errors:null
     };
   },
   mounted() {
@@ -113,7 +114,7 @@ export default {
         );
     },
     showData(){
-      console.log(this.transaksi);
+      console.log(this.errors);
     },
     deleteRow(param){
       this.deleteStatus = true;
@@ -138,6 +139,7 @@ export default {
       this.deleteStatus = false;
       this.deletedId = null;
     },
+
     async detailTransaksiEvent(param){
       this.detailStatus = false;
       if(param){
@@ -158,7 +160,7 @@ export default {
       // }
       // alert(dataSend);
       
-      
+      let errorList = null;
       await fetch(this.link, {
         method: "PUT",
         body: dataSend,
@@ -166,13 +168,32 @@ export default {
           "Content-Type": "application/json",
         }
       })
-        .then((response) => response.json())
-        .then((response) => console.log("Hasilnya : ",response));
-      
+        // .then((response) => (response.json()))
+        // .then(()=> this.getTransaksi())
+        .then((response) => {if(response.status==200){this.getTransaksi();}else{return response.json();}})
+        .then((response) => errorList=response)
+        // .catch(err => {console.log("errornya",err.response)})
+       
+        if(this.error!=null){
+          console.log("this.error", this.error);
+        }
+
+        if(errorList=="tes"){
+          console.log("list error : ",(errorList));
+        }
+
+        var dataError = Object.keys(errorList);
+        // var keys = Object.keys(obj); // ['key1', 'key2']
+        dataError.forEach( function(key) {
+          var values = errorList[key];
+          for(let i=0; i<errorList[key].length; i++)
+          {alert(values[i]);}
+          // do stuff with "values"
+        })
       }
 
       
-      this.getTransaksi();
+      // this.getTransaksi();
 
     },
 
