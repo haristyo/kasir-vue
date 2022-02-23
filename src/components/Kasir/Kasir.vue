@@ -118,9 +118,9 @@
 
 <script>
 // import func from "vue-editor-bridge";
-import Konfirmasi from "./Konfirmasi.vue";
+import Konfirmasi from "./../Konfirmasi.vue";
 import TambahBarang from "./TambahBarang.vue";
-import Popup from "./Popup.vue";
+import Popup from "./../Popup.vue";
 
 export default {
   name: "kasir",
@@ -139,7 +139,7 @@ export default {
       // addedItem:[],
       deletedDataItem: null,
       items: [],
-      url: "https://localhost:44356/api/belanja",
+      url: "https://localhost:44356/api/invoice",
     };
   },
   methods: {
@@ -182,17 +182,19 @@ export default {
     },
 
     async checkout() {
-      await console.log(this.items);
-      let dataSend = [];
+      let DetailTransaksi = [];
       for (let i = 0; i < this.items.length; i++) {
-        dataSend.push({
+        DetailTransaksi.push({
           itemid: this.items[i].id,
-          name: this.items[i].namaBarang,
-          price: this.items[i].hargaSatuan,
           qty: this.items[i].qty
         });
       }
-      console.log("dataSend : ", dataSend);
+      let dataSend = {
+        "invoiceDetails" : DetailTransaksi
+      }
+      await console.log("data terkirim ke api : ",dataSend);
+
+      console.log("dataSend : ", JSON.stringify(dataSend));
       await fetch(this.url, {
         method: "POST",
         body: JSON.stringify(dataSend),
@@ -202,6 +204,7 @@ export default {
       })
         .then((response) => response.json())
         .then((response) => console.log(response));
+
       // .then((data) => console.log("hasil fetch : ", (this.url = data)));
       // await console.log("hasil fetch : ", this.url);
       this.items=[];

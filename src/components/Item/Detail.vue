@@ -5,16 +5,16 @@
         <tr>
           <th>Nama</th>
           <td v-if="inputStatus">
-            <input type="text" v-model="items.namaBarang" />
+            <input type="text" v-model="items.name" />
           </td>
-          <td v-else>{{ items.namaBarang }}</td>
+          <td v-else>{{ items.name }}</td>
         </tr>
         <tr>
           <th>Harga Satuan</th>
           <td v-if="inputStatus">
-            <input type="text" v-model="items.hargaSatuan" />
+            <input type="text" v-model="items.price" />
           </td>
-          <td v-else>Rp. {{ formatPrice(items.hargaSatuan) }}</td>
+          <td v-else>Rp. {{ formatPrice(items.price) }}</td>
         </tr>
         <tr>
           <th>Code Barang</th>
@@ -41,7 +41,8 @@ export default {
         // hargaSatuan: 1000,
       },
       item: null,
-      url: "https://localhost:44356/api/Items",
+      url: "https://localhost:44356/api/item",
+      // url: "https://localhost:44356/api/Items",
       link: null,
     };
   },
@@ -49,6 +50,8 @@ export default {
     console.log("Mounted id:", this.detailBarangId);
     if (this.detailBarangId) {
       this.getItems();
+      // console.log(this.items);
+      // console.log("items :",this.items);
     }
   },
   created() {
@@ -64,18 +67,19 @@ export default {
       } else {
         this.link = this.url;
       }
-      console.log(this.link);
+      // console.log(this.link);
       await fetch(this.link)
         .then((response) => response.json())
         .then((data) => {
           this.items = {
             id: data.id,
-            namaBarang: data.name,
-            hargaSatuan: data.price,
+            name: data.name,
+            price: data.price,
             code:data.code
           };
         })
         .then("items : ", console.log(this.items));
+      console.log(this.items);
     },
 
     async simpan(status) {
@@ -86,9 +90,9 @@ export default {
           await fetch(this.link, {
             method: "PUT",
             body: JSON.stringify({
-              
-              name: this.items.namaBarang,
-              price: this.items.hargaSatuan,
+              id: this.items.id,
+              name: this.items.name,
+              price: this.items.price ? this.items.price:0 ,
               code: this.items.code,
             }),
             headers: {
@@ -99,8 +103,8 @@ export default {
           await fetch(this.url, {
             method: "POST",
             body: JSON.stringify({
-              name: this.items.namaBarang,
-              price: this.items.hargaSatuan,
+              name: this.items.name,
+              price: this.items.price,
               code: this.items.code,
             }),
             headers: {

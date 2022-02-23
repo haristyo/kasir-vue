@@ -18,7 +18,18 @@
       <td>Rp. {{transaksi.itemPrice*transaksi.qty|formatPrice}}</td>
       <td><button @click="deleteRow(index)" class="hapus">Hapus</button></td>
       </tr>
-        
+      <tr>
+        <td colspan=4>Total</td>
+        <td>Rp.{{total|formatPrice}}</td>
+      </tr>
+      <tr>
+        <td colspan=4>Diskon</td>
+        <td>Rp.{{diskon|formatPrice}}</td>
+      </tr>
+      <tr>
+        <td colspan=4>Grand Total</td>
+        <td>Rp.{{Number(total)-Number(diskon)|formatPrice}}</td>
+      </tr>
     </tbody>
     </table>
     <div>
@@ -40,7 +51,8 @@ export default {
     return {
       transaksi: [],
       item: null,
-      url: "https://localhost:44356/api/Belanja",
+      url: "https://localhost:44356/api/invoice",
+      // url: "https://localhost:44356/api/belanja",
       link: null,
     };
   },
@@ -49,10 +61,30 @@ export default {
     if (this.invoiceId) {
       this.getTransaksi();
     }
+    
   },
   created() {
   },
   beforeMount() {
+  },
+  computed:{
+    total() {
+      let total = 0;
+      if(this.transaksi.invoiceDetails){
+        for(let i=0; i<this.transaksi.invoiceDetails.length; i++){
+          total =
+            Number(total) + Number(this.transaksi.invoiceDetails[i].itemPrice) * Number(this.transaksi.invoiceDetails[i].qty);
+        }
+      }
+      return total;
+    },
+    diskon(){
+      let diskon=0;
+      if(this.total >= 10000){
+        diskon = this.total*0.1;
+      }
+      return diskon;
+    }
   },
   methods: {
 
@@ -75,7 +107,8 @@ export default {
         .then((data) => {
           this.transaksi = data;
         })
-        .then(console.log("Transaksi : ", this.transaksi));
+        // .then(console.log("Transaksi : ", this.transaksi));
+      console.log("target invoice : ",this.transaksi);
     },
     async simpan(status){
       if(status){

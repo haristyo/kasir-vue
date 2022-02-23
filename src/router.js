@@ -8,15 +8,15 @@ export default new Router({
     routes: [
         {
             path:'/',
-            component: () => import('./components/ListBarang.vue')
+            component: () => import('./components/Item/ListBarang.vue')
         },
         {
             path:'/kasir',
-            component: () => import('./components/Kasir.vue')
+            component: () => import('./components/Kasir/Kasir.vue')
         },
         {
             path:'/transaksi',
-            component: () => import('./components/Transaksi.vue')
+            component: () => import('./components/Transaksi/Transaksi.vue')
         },
         {
             path:'/page1',

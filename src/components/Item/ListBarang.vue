@@ -48,11 +48,11 @@
         <tr v-for="(itemData, index) in items" :key="index">
           <td>{{ index + 1 }}</td>
           <td>
-            {{ itemData.namaBarang }}
+            {{ itemData.name }}
           </td>
           <td>
             RP.
-            {{ formatPrice(itemData.hargaSatuan) }}
+            {{ formatPrice(itemData.price) }}
           </td>
           <td>
             {{ itemData.code }}
@@ -79,8 +79,8 @@
 <script>
 // import func from "vue-editor-bridge";
 import DetailBarang from "./Detail.vue";
-import Konfirmasi from "./Konfirmasi.vue";
-import Popup from "./Popup.vue";
+import Konfirmasi from "./../Konfirmasi.vue";
+import Popup from "./../Popup.vue";
 // import axios from "axios";
 
 export default {
@@ -93,7 +93,8 @@ export default {
   data() {
     return {
       items: [],
-      url: "https://localhost:44356/api/Items",
+      url: "https://localhost:44356/api/item",
+      // url: "https://localhost:44356/api/Items",
       // url: "https://localhost:5001/api/Items",
       deleteStatus: false,
       deletedId: null,
@@ -115,8 +116,8 @@ export default {
           for (let index = 0; index < data.length; index++) {
             this.items.push({
               id: data[index].id,
-              namaBarang: data[index].name,
-              hargaSatuan: data[index].price,
+              name: data[index].name,
+              price: data[index].price,
               code: data[index].code
             });
           }

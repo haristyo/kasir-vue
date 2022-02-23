@@ -36,13 +36,12 @@
         <td>{{index+1}}</td>
         <td>{{transaksiData.invoiceNo}}</td>
         <td>{{transaksiData.invoiceDate | moment}}</td>
-        <td>Rp. {{ total_harga(transaksiData) | formatPrice}}</td>
+        <td>Rp. {{ total_harga(transaksiData)*0.9 | formatPrice}}</td>
         <td>{{ total_item(transaksiData)}}</td>
         <td><button @click="showDetail(transaksiData)" class="total" >Tampil Rincian Transaksi</button></td>
         </tr>
         <tr>
           <td colspan="3"></td>
-          <td><button @click="addRandomData" class="tambah">Tambah Data Acak</button></td>
           <td><button @click="showData" class="tambah">Tampil Data</button></td>
         </tr>
       </tbody>
@@ -52,7 +51,7 @@
 
 <script>
 // import func from "vue-editor-bridge";
-import Popup from "./Popup.vue";
+import Popup from "./../Popup.vue";
 import DetailTransaksi from "./DetailTransaksi.vue";
 // import axios from "axios";
 import moment from 'moment';
@@ -77,7 +76,8 @@ export default {
   data() {
     return {
       transaksi: [],
-      url: "https://localhost:44356/api/Belanja",
+      url: "https://localhost:44356/api/invoice",
+      // url: "https://localhost:44356/api/Belanja",
       // url: "https://localhost:5001/api/Items",
       deleteStatus: false,
       showJson: null,
@@ -109,11 +109,6 @@ export default {
                         }
         );
     },
-    async addRandomData(){
-      await fetch(this.url+'invoice')
-      .then((response) => response.json())
-      .then(this.getTransaksi());
-    },
     showData(){
       console.log(this.transaksi);
     },
@@ -125,25 +120,25 @@ export default {
       if(param){
       console.log("terkirim dari popup : ", param);
       let invoiceUpdate = {
-        Id : param.id,
-        InvoiceDate : param.invoiceDate,
-        InvoiceNo : param.invoiceNo,
-        InvoiceDetails: []
+        id : param.id,
+        invoiceDate : param.invoiceDate,
+        invoiceNo : param.invoiceNo,
+        invoiceDetails: param.invoiceDetails
+        // InvoiceDetails: []
         };
-        for(let i=0; i < param.invoiceDetails.length;i++){
-          invoiceUpdate.InvoiceDetails.push(
-            {
-              Id: param.invoiceDetails[i].id,
-              ItemId: param.invoiceDetails[i].itemId,
-              InvoiceId : param.id,
-              Price : Number(param.invoiceDetails[i].qty) * Number(param.invoiceDetails[i].itemPrice),
-              Qty : param.invoiceDetails[i].qty,
-          }
-          );
-        }
+        // for(let i=0; i < param.invoiceDetails.length;i++){
+        //   invoiceUpdate.InvoiceDetails.push(
+        //     {
+        //       Id: param.invoiceDetails[i].id,
+        //       ItemId: param.invoiceDetails[i].itemId,
+        //       InvoiceId : param.id,
+        //       Qty : param.invoiceDetails[i].qty,
+        //     }
+        //   );
+        // }
       
       console.log("invoice Update Terbaru:", invoiceUpdate);
-      let dataSend = JSON.stringify(invoiceUpdate.InvoiceDetails);
+      let dataSend = JSON.stringify(invoiceUpdate);
       // this.showJson = dataSend;
       console.log("data bakal disubmit  : ", dataSend);
       this.link = this.url + "/" + param.id;
@@ -159,8 +154,8 @@ export default {
           "Content-Type": "application/json",
         }
       })
+        .then((response) => response.json())
         .then((response) => console.log("Hasilnya : ",response));
-        // .then((response) => response.json())
       
       }
 

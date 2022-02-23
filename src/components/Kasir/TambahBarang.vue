@@ -61,7 +61,8 @@ export default {
     // this.getList();
     return {
       // url: "https://api.dictionaryapi.dev/api/v2/entries/en/hello",
-      url: "https://localhost:44356/api/Items",
+      // url: "https://localhost:44356/api/Items",
+      url: "https://localhost:44356/api/Item",
       //   barang: [
       //     {
       //       checkedStatus: false,
