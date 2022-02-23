@@ -2,9 +2,8 @@
   <div>
     <Popup :isShow="deleteStatus">
       <template name="title">Hapus Transaksi</template>
-      <template>
-        <Konfirmasi />
-      </template>
+      <br/>
+
       <template name="button">
         <button @click="hapus(true)">Hapus</button>
         <button @click="hapus(false)">Batal</button>
@@ -38,7 +37,10 @@
         <td>{{transaksiData.invoiceDate | moment}}</td>
         <td>Rp. {{ total_harga(transaksiData)*0.9 | formatPrice}}</td>
         <td>{{ total_item(transaksiData)}}</td>
-        <td><button @click="showDetail(transaksiData)" class="total" >Tampil Rincian Transaksi</button></td>
+        <td>
+        <button @click="showDetail(transaksiData)" class="total" >Tampil Rincian Transaksi</button>
+        <button @click="deleteRow(transaksiData)" class="hapus" >Hapus</button>
+        </td>
         </tr>
         <tr>
           <td colspan="3"></td>
@@ -53,6 +55,7 @@
 // import func from "vue-editor-bridge";
 import Popup from "./../Popup.vue";
 import DetailTransaksi from "./DetailTransaksi.vue";
+
 // import axios from "axios";
 import moment from 'moment';
 
@@ -112,8 +115,28 @@ export default {
     showData(){
       console.log(this.transaksi);
     },
-    hapus(){
-
+    deleteRow(param){
+      this.deleteStatus = true;
+      console.log("id deleted", param.id);
+      this.deletedId = param.id;
+      // console.log(param);
+    },
+    async hapus(status){
+      if (status) {
+        console.log("status hapus ", status, this.deletedId);
+        let link = this.url + "/" + this.deletedId;
+        console.log("Link delete", link);
+        await fetch(link, {
+          method: "DELETE",
+        })
+        .then();
+        // .then(this.getTransaksi());
+        // .then(function(response) {if(response){ alert(response);}})
+        // .then((response) => console.log("Hasilnya : ",response));
+      }
+      this.getTransaksi();
+      this.deleteStatus = false;
+      this.deletedId = null;
     },
     async detailTransaksiEvent(param){
       this.detailStatus = false;
@@ -124,25 +147,14 @@ export default {
         invoiceDate : param.invoiceDate,
         invoiceNo : param.invoiceNo,
         invoiceDetails: param.invoiceDetails
-        // InvoiceDetails: []
         };
-        // for(let i=0; i < param.invoiceDetails.length;i++){
-        //   invoiceUpdate.InvoiceDetails.push(
-        //     {
-        //       Id: param.invoiceDetails[i].id,
-        //       ItemId: param.invoiceDetails[i].itemId,
-        //       InvoiceId : param.id,
-        //       Qty : param.invoiceDetails[i].qty,
-        //     }
-        //   );
-        // }
+
       
-      console.log("invoice Update Terbaru:", invoiceUpdate);
+      // console.log("invoice Update Terbaru:", invoiceUpdate);
       let dataSend = JSON.stringify(invoiceUpdate);
-      // this.showJson = dataSend;
-      console.log("data bakal disubmit  : ", dataSend);
+      // console.log("data bakal disubmit  : ", dataSend);
       this.link = this.url + "/" + param.id;
-      console.log("target api : ", this.link);
+      // console.log("target api : ", this.link);
       // }
       // alert(dataSend);
       
@@ -250,5 +262,13 @@ tr th {
 }
 button {
   min-width: 65px;
+}
+.hapus {
+  border-color: #f44336;
+  color: red;
+}
+.hapus:hover {
+  background-color: #f44336;
+  color: white;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>Anda yakin ingin mengapus barang ?</div>
+  <div>Anda yakin ingin menghapus barang ?</div>
 </template>
 <script>
 export default {

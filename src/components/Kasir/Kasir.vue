@@ -336,6 +336,10 @@ tr td {
   border-color: #f44336;
   color: red;
 }
+.hapus:hover {
+  background-color: #f44336;
+  color: white;
+}
 .total-label {
   background-color: aqua;
   background: blue;
@@ -345,10 +349,7 @@ tr th {
   color: white;
   background: black;
 }
-.hapus:hover {
-  background-color: #f44336;
-  color: white;
-}
+
 button {
   min-width: 65px;
 }
